@@ -1,0 +1,25 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+namespace GraphQLApi.Data
+{
+    public class CourseDbContext : DbContext
+    {
+        public CourseDbContext(DbContextOptions<CourseDbContext> options) 
+            : base(options)
+        {}
+
+        public DbSet<Course> Course { get; set; }
+        public DbSet<Section> Section { get; set; }
+        public DbSet<Rating> Rating { get; set; }
+        public DbSet<Lecture> MyProperty { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Lecture>()
+                .HasDiscriminator<string>("Discriminator")
+                .HasValue<Subject>("Subject")
+                .HasValue<Assignment>("Assignment");
+        }
+    }
+}
